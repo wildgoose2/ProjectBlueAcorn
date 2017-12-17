@@ -1,5 +1,6 @@
 package game;
 
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -34,7 +35,7 @@ public class Menu extends BasicGameState {
 
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		Input input = container.getInput();
-		if(input.isMouseButtonDown(0))
+		if(input.isMouseButtonDown(0) && play.onButton())
 			game.enterState(1);
 	}
 	

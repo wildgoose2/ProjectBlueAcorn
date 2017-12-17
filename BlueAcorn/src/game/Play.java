@@ -1,6 +1,7 @@
 package game;
 
 
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -35,7 +36,7 @@ public class Play extends BasicGameState {
 		}
 	}
 
-	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {		
 		player.update(container, game, delta);
 		map.update(container, game, delta);
 

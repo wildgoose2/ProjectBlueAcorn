@@ -1,4 +1,4 @@
-package game.engine;
+package game;
 
 public enum TileID {
 	GRASS, SAND

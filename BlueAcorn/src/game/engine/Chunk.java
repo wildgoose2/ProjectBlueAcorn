@@ -9,15 +9,17 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import game.ObjectID;
+import game.TileID;
+
 public class Chunk {
 	private final int CHUNK_X, CHUNK_Y, CHUNK_LENGTH, TILE_LENGTH;
 	private Player player;
 	private List<TileID> tiles;
-	private HashMap<Integer, ObjectID> objects;
+	private List<GameObject> objects;
 	private HashMap<TileID, Image> tileTextures = new HashMap<TileID, Image>();
-	private HashMap<ObjectID, Image> objectTextures = new HashMap<ObjectID, Image>();
 	
-	public Chunk(Player player, int x, int y, int chunkLength, int tileLength, List<TileID> tiles, HashMap<Integer, ObjectID> objects)
+	public Chunk(Player player, int x, int y, int chunkLength, int tileLength, List<TileID> tiles, List<GameObject> objects)
 	{
 		this.player = player;
 		this.CHUNK_X = x;
@@ -33,10 +35,10 @@ public class Chunk {
 			e.printStackTrace();
 		}
 	}
-	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+	public void renderTiles(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		
-		int xPos = player.getxPos() - CHUNK_X*CHUNK_LENGTH*TILE_LENGTH;
-		int yPos = player.getyPos() - CHUNK_Y*CHUNK_LENGTH*TILE_LENGTH;
+		int xPos = (int)player.getxPos() - CHUNK_X*CHUNK_LENGTH*TILE_LENGTH;
+		int yPos = (int)player.getyPos() - CHUNK_Y*CHUNK_LENGTH*TILE_LENGTH;
 		
 		for(int i = 0; i < this.CHUNK_LENGTH * this.CHUNK_LENGTH; i++)
 		{
@@ -48,17 +50,24 @@ public class Chunk {
 				g.drawImage(tileTextures.get(tiles.get(i)), tempX, tempY);
 			}
 		}
-		for(Integer i : objects.keySet()) {
-			g.drawImage(objectTextures.get(objects.get(i)), (container.getWidth()/2) + (i%(CHUNK_LENGTH*TILE_LENGTH)) - xPos, (container.getHeight()/2) + (i/(CHUNK_LENGTH*TILE_LENGTH)) - yPos);
-		}
+	}
+	public void renderObjects(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+		int xPos = (int)player.getxPos() - CHUNK_X*CHUNK_LENGTH*TILE_LENGTH;
+		int yPos =(int) player.getyPos() - CHUNK_Y*CHUNK_LENGTH*TILE_LENGTH;
 		
+		for(GameObject object : objects) {
+			g.drawImage(object.getImage(), (container.getWidth()/2) + (object.getxPos()) - xPos, (container.getHeight()/2) + (object.getyPos()) - yPos);
+		}
+	}
+	public void update(GameContainer container, StateBasedGame game, int delta) {
+		for(GameObject object: objects) {
+			object.update(container, game, delta);
+		}
 	}
 
 	
 	public void loadTextures() throws SlickException {
 		tileTextures.put(TileID.GRASS, new Image("res/grass.png"));
 		tileTextures.put(TileID.SAND, new Image("res/sand.png"));
-		objectTextures.put(ObjectID.TREE, new Image("res/tree.png"));
-		objectTextures.put(ObjectID.ROCK, new Image("res/rock.png"));
 	}
 }

@@ -1,32 +1,43 @@
 package game.engine;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.state.StateBasedGame;
+
+import game.ObjectID;
 
 public abstract class GameObject {
-	protected int xPos, yPos, width, height;
+	protected int width, height;
+	protected float xPos, yPos;
 	protected Image image;
+	protected ObjectID id;
 	
-	public GameObject(int xPos, int yPos, Image image) {
+	public GameObject(float xPos, float yPos, Image image, ObjectID id) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.image = image;
 		this.width = image.getWidth();
 		this.height = image.getHeight();
+		this.id = id;
 	}
-	public GameObject(int xPos, int yPos, Image image, int width, int height) {
+	public GameObject(float xPos, float yPos, Image image, ObjectID id, int width, int height) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.image = image;
 		this.width = width;
 		this.height = height;
+		this.id = id;
 	}
-	public int getxPos() {
+	
+	abstract public void update(GameContainer container, StateBasedGame game, int delta);
+	
+	public float getxPos() {
 		return xPos;
 	}
 	public void setxPos(int xPos) {
 		this.xPos = xPos;
 	}
-	public int getyPos() {
+	public float getyPos() {
 		return yPos;
 	}
 	public void setyPos(int yPos) {
@@ -50,6 +61,13 @@ public abstract class GameObject {
 	public void setImage(Image image) {
 		this.image = image;
 	}
+	public ObjectID getId() {
+		return id;
+	}
+	public void setId(ObjectID id) {
+		this.id = id;
+	}
+	
 	
 	
 	
