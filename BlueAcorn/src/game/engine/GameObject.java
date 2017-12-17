@@ -6,6 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import game.ObjectID;
 
+//Parent GameObject class that stores all necessary fields and getters and setters for game objects
 public abstract class GameObject {
 	protected int width, height;
 	protected float xPos, yPos;
