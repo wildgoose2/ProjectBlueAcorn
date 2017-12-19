@@ -23,7 +23,7 @@ public class Play extends BasicGameState {
 	//Initialization method that initializes the player and the map
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		player = new Player(0,0,new Image("res/stick.png"));
-		map = new Map(player, 16, 32);
+		map = new Map(player, 16, 32, 3000);
 	}
 	
 	//Render method that renders the map, the player, and debug information

@@ -85,5 +85,6 @@ public class Chunk {
 	public void loadTextures() throws SlickException {
 		tileTextures.put(TileID.GRASS, new Image("res/grass.png"));
 		tileTextures.put(TileID.SAND, new Image("res/sand.png"));
+		tileTextures.put(TileID.WATER, new Image("res/water.png"));
 	}
 }

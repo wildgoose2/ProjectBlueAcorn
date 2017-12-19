@@ -1,5 +1,5 @@
 package game;
 
 public enum TileID {
-	GRASS, SAND
+	GRASS, SAND, WATER
 }

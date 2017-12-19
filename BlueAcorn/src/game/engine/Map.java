@@ -3,6 +3,7 @@ package game.engine;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -20,15 +21,19 @@ public class Map {
 	private Player player;				//Stores the player object
 	private int xMax,yMax,xMin,yMin;	//Stores the limits of the array of currently visible chunks
 	private int chunkLength,tileLength;	//Stores chunk tile length and tile pixel length data
+	private SimplexNoise noise;
+	Random random;
 	
 	//Stores all visible and invisible chunks that have been loaded once
 	private HashMap<Integer, HashMap<Integer, Chunk>> chunks = new HashMap<Integer, HashMap<Integer, Chunk>>();
 	
 	//Constructor
-	public Map(Player player, int chunkLength, int tileLength) {
+	public Map(Player player, int chunkLength, int tileLength, int seed) {
 		this.player = player;
 		this.chunkLength = chunkLength;
 		this.tileLength = tileLength;
+		this.random = new Random(seed);
+		this.noise = new SimplexNoise(100,0.1,seed);
 	}
 	
 	//Render method
@@ -90,24 +95,30 @@ public class Map {
 	//Temporary method used to randomly generate chunk data for testing while loadable maps are implemented
 	private Chunk generateChunk(int x, int y, int chunkLength, int tileLength) throws SlickException{
 		List<TileID> tiles = new ArrayList<TileID>();
-		for(int i = 0; i < chunkLength*chunkLength; i++) {
-			TileID tile;
-			if(Math.random() > 0.5)
-				tile = TileID.GRASS;
-			else
-				tile = TileID.SAND;
-			tiles.add(tile);
-		}
-		
 		List<GameObject> objects = new ArrayList<GameObject>();
-		for(int i = 0; i < (int)(Math.random()*20); i++)
-		{
-			GameObject object;
-			if(Math.random() > 0.5)
-				object = new Tree((int)(Math.random()*chunkLength*tileLength),(int)(Math.random()*chunkLength*tileLength),new Image("res/tree2.png"), ObjectID.TREE);
-			else
-				object = new Rock((int)(Math.random()*chunkLength*tileLength),(int)(Math.random()*chunkLength*tileLength),new Image("res/rock2.png"), ObjectID.ROCK);
-			objects.add(object);
+		
+		for(int i = 0; i < chunkLength*chunkLength; i++) {
+			
+			TileID tile;
+			double tileNoise = noise.getNoise(x*chunkLength+i%chunkLength, y*chunkLength+i/chunkLength);
+			System.out.println(tileNoise);
+			
+			if(tileNoise > 0.05)
+				tile = TileID.WATER;
+			else if(tileNoise < 0.05 && tileNoise > 0.042)
+				tile = TileID.SAND;
+			else {
+				tile = TileID.GRASS;
+				System.out.println(random.nextInt(20));
+				if(random.nextInt(100) == 0)
+				{
+					if(Math.random() > 0.5)
+						objects.add(new Tree((i%chunkLength)*tileLength, (i/chunkLength)*tileLength, new Image("res/tree2.png"), ObjectID.TREE));
+					else
+						objects.add(new Rock((i%chunkLength)*tileLength, (i/chunkLength)*tileLength, new Image("res/rock2.png"), ObjectID.ROCK));
+				}
+			}
+			tiles.add(tile);
 		}
 		
 		return new Chunk(player, x, y, chunkLength, tileLength, tiles, objects);	
