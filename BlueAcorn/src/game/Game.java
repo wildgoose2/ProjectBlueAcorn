@@ -14,7 +14,7 @@ public class Game extends StateBasedGame{
 		this.addState(new Play(1));
 	}
 	
-	//Hello hello
+	//Hello hello hello
 	//Main method that initializes a new game with graphics settings
 	public static void main(String[] args) {
 		AppGameContainer appgc;
