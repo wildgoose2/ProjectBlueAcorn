@@ -14,12 +14,13 @@ public class Game extends StateBasedGame{
 		this.addState(new Play(1));
 	}
 	
+	//Hello hello
 	//Main method that initializes a new game with graphics settings
 	public static void main(String[] args) {
 		AppGameContainer appgc;
 		try {
 			appgc = new AppGameContainer(new Game(gamename));
-			appgc.setDisplayMode(1680, 1050, false);
+			appgc.setDisplayMode(800, 600, false);
 			appgc.setTargetFrameRate(60);
 			appgc.start();
 		}catch(SlickException e) {
